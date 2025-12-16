@@ -7,7 +7,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_deepseek import ChatDeepSeek
+# from langchain_deepseek import ChatDeepSeek
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
@@ -46,19 +47,26 @@ prompt = ChatPromptTemplate.from_template("""请根据下面提供的上下文�
                                           )
 
 # 配置大语言模型
-llm = ChatDeepSeek(
-    model="deepseek-chat",
+# llm = ChatDeepSeek(
+#     model="deepseek-chat",
+#     temperature=0.7,
+#     max_tokens=4096,
+#     api_key=os.getenv("DEEPSEEK_API_KEY")
+# )
+llm = ChatOpenAI(
+    model=os.getenv("LLM_MODEL", "gpt-4o"),
     temperature=0.7,
     max_tokens=4096,
-    api_key=os.getenv("DEEPSEEK_API_KEY")
+    base_url=os.getenv("OPENAI_BASE_URL"),
+    api_key=os.getenv("OPENAI_API_KEY")
 )
 
 # 用户查询
 question = "文中举了哪些例子？"
 
 # 在向量存储中查询相关文档
-retrieved_docs = vectorstore.similarity_search(question, k=3)
+retrieved_docs = vectorstore.similarity_search(question, k=6)
 docs_content = "\n\n".join(doc.page_content for doc in retrieved_docs)
 
 answer = llm.invoke(prompt.format(question=question, context=docs_content))
-print(answer)
+print(answer.content)
