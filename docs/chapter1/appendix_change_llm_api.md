@@ -43,10 +43,10 @@ llm = ChatOpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 ```
-# 2. 更换Embedding模型（使用text-embedding-3-large等）
-## 2.1 环境变量更新
+## 2. 更换Embedding模型（使用text-embedding-3-large等）
+### 2.1 环境变量更新
 同上。
-## 2.2 调用代码更新
+### 2.2 调用代码更新
 **1.更换引入的模块**  
 将
 ```python
