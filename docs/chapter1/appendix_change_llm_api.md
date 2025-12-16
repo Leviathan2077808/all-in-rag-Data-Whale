@@ -56,6 +56,15 @@ from langchain_openai import OpenAIEmbeddings
 ```
 
 **2.替换Embedding定义**
+将
+```python
+embeddings = HuggingFaceEmbeddings(
+    model_name="BAAI/bge-small-zh-v1.5",
+    model_kwargs={'device': 'cpu'},
+    encode_kwargs={'normalize_embeddings': True}
+)
+```
+改为
 ```python
 embeddings = OpenAIEmbeddings(
     model="text-embedding-3-large",  # 或 text-embedding-3-small
